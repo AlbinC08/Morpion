@@ -1,0 +1,30 @@
+.grille {
+    height: 900px;
+    width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
+}
+
+.case {
+    text-align: center;
+    font-size:300px;
+    border: 3px solid #000000;
+    height: 300px;
+    width: 300px;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+#game {
+    display: grid;
+    justify-content: center;
+}
+
+#display_current_player {
+    text-align: center;
+    
+}
