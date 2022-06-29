@@ -1,7 +1,8 @@
 let round = 1
-const player1 = 'Joueur 1'
-const player2 = 'Joueur 2'
-let game_stat = ['', '', '', '', '', '', '', '', '']
+let canplay = true
+let modeCpu = false
+let player1 = 'Joueur 1'
+let player2 = 'Joueur 2'
 let current_player = player1
 let gameover = false
 let victoryCondition = [
@@ -14,12 +15,18 @@ let victoryCondition = [
     [1, 4, 7],
     [2, 5, 8]
 ]
-
 function change_player() {
     if (round % 2 == 0) {
         current_player = player2
+        if (current_player == player2 && modeCpu == true) {
+            canplay = false
+            setTimeout(function () {
+                CPUplay()
+            }, 1000)
 
-    } else {
+        }
+    }
+    if (round % 2 != 0) {
         current_player = player1
     }
 }
@@ -27,9 +34,14 @@ change_player()
 
 function display_XorO(element) {
     if (current_player == player1) {
-        element.innerText = 'O'
-    } else {
         element.innerText = 'X'
+        element.style.backgroundImage = 'url(assets/images/X1.png)';
+        element.style.backgroundSize = 'cover'; 
+    }
+    if (current_player == player2) {
+        element.innerText = 'O'
+        element.style.backgroundImage = 'url(assets/images/O.png)';
+        element.style.backgroundSize = 'cover'; 
     }
 }
 
@@ -40,26 +52,31 @@ function display_current_player() {
 
 
 function game(element) {
+    if (canplay) {
+        if (element.innerText == "" && !gameover && round < 10) {
+            display_XorO(element)
+            victory_condition()
+            console.log(victoryCondition);
+            round++
+            console.log(round);
+            change_player()
+            display_current_player()
+        }
+        if (round == 10 && gameover == false) {
+            document.querySelector('#display_current_player').innerText = 'Match Nul'
+        }
+    }
 
-    if (element.innerText == "" && !gameover) {
-        display_XorO(element)
-        victory_condition()
-        console.log(victoryCondition);
-        round++
-        console.log(round);
-        change_player()
-        display_current_player()
-    }
-    if (round == 10 && gameover == false) {
-    document.querySelector('#display_current_player').innerText = 'Match Nul'        
-    }
-   
 }
 
 function reset() {
     let empty_case = document.querySelectorAll('.case')
     for (let i = 0; i < empty_case.length; i++) {
-        empty_case[i].innerText = ''        
+        empty_case[i].innerText = ''
+    }
+    let empty_case2 = document.querySelectorAll('.case')
+    for (let i = 0; i < empty_case2.length; i++) {
+        empty_case2[i].style.backgroundImage = '';
     }
     gameover = false
     current_player = player1
@@ -87,17 +104,39 @@ function victory_condition() {
     }
 }
 
-
-for (let i = 0; i < document.querySelectorAll('.case').length; i++) {
-    if (document.querySelectorAll('.case')[i].innerText != '') {
-        console.log('ivuhvuhvv');
-    }
-}
-
-
 function aleatoire(min, max) {
     return Math.round(Math.random() * (max - min) + min);
 }
 
 
+function CPUplay() {
+    let count = 1
+        canplay = true
+    while (true) {
+        let random = aleatoire(0, document.querySelectorAll('.case').length - 1)
+        if (count == document.querySelectorAll('.case').length) {
+            console.log(count + "nbvbvvb");
+            break
+        }
+        if (document.querySelectorAll('.case')[random].innerText == '') {
+            document.querySelectorAll('.case')[random].click()
+            break
+        }
+        count++
+    }
+}
 
+function game_mode_toggle() {
+    modeCpu = !modeCpu
+    console.log(modeCpu);
+    if (modeCpu == true) {
+        document.querySelector('#toggle').style.color = 'green'
+        player2 = 'CPU'
+        console.log(player2);
+    } else {
+        document.querySelector('#toggle').style.color = 'red'
+        player2 = 'Joueur 2'
+        console.log(player2);
+
+    }
+}
