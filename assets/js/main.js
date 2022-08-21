@@ -240,7 +240,7 @@ function createGrid(nmbLine, nmbCase, grid_l, mode) {
             power_for_grid[i].style.height = '75px'
         }
     } else {
-        document.querySelector('#h1').innerText = 'Morpion qui gratte pas'
+        document.querySelector('#h1').innerText = 'Morpion'
     }
     reset()
 }
